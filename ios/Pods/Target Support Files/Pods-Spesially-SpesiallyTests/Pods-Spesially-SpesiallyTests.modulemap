@@ -1,0 +1,6 @@
+module Pods_Spesially_SpesiallyTests {
+  umbrella header "Pods-Spesially-SpesiallyTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
