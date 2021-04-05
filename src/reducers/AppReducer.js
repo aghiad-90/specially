@@ -5,7 +5,7 @@ import appState from "../contants/initialState";
  *
  * @param {Object} state initial State
  * @param {Object} action  determine the type of actions to perform
- * @returns
+ * @returns return an object with updated State
  */
 
 const AppReducer = (state = appState.cart, action) => {
