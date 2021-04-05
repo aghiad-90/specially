@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/utils.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/utils.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { showMessage } from "react-native-flash-message";
+import { Dimensions } from "react-native";
+import i18n from "i18n-js";
+import { I18nManager } from "react-native";
+import { Popup } from "../components/popup-ui";
+
+/**
+ *
+ * @returns return the size of the Device
+ */
+
+export const iPhoneSize = () => {
+  const windowWidth = Dimensions.get("window").width;
+  if (windowWidth === 320) {
+    return "small"; // iPhone SE
+  }
+  if (windowWidth === 414) {
+    return "large"; // iPhone Plus
+  }
+  return "medium"; // iPhone 6/7
+};
+
+/**
+ *
+ */
+
+export const translationGetters = {
+  // lazy requires (metro bundler does not support symlinks)
+  ar: () => require("../translations/ar.json"),
+  en: () => require("../translations/en.json"),
+};
+
+// export const translate = memoize(
+//     (key, config) => i18n.t(key, config),
+//     (key, config) => (config ? key + JSON.stringify(config) : key)
+// );
+export const translate = (key) => {
+  return key;
+};
+
+export const setI18nConfig = (language) => {
+  // fallback if no available language fits
+  // let rtl = false;
+  // if (language != 'en') {
+  //     rtl = true;
+  // }
+  // const fallback = { languageTag: language, isRTL: rtl };
+  // // const fallback = { languageTag: "en", isRTL: false };
+  // const { languageTag, isRTL } = fallback;
+  // // clear translation cache
+  // translate.cache.clear();
+  // // update layout direction
+  // I18nManager.forceRTL(isRTL);
+  // // set i18n-js config
+  // i18n.translations = { [languageTag]: translationGetters[languageTag]() };
+  // i18n.locale = languageTag;
+};
+
+/**
+ * @typedef {Function}
+ * @param {Text} message
+ */
+
+export const showDanger = (message) => {
+  showMessage({
+    message: message,
+    type: "danger",
+    position: "top",
+    animated: true,
+    floating: false,
+    duration: 1000,
+  });
+};
+
+/**
+ * @typedef {Function}
+ * @param {Text} message
+ */
+
+export const showDangerTop = (message) => {
+  showMessage({
+    message: message,
+    type: "danger",
+    animated: true,
+    floating: false,
+    duration: 1000,
+  });
+};
+
+/**
+ * @typedef {Function}
+ * @param {Text} message
+ */
+export const showSuccess = (message) => {
+  showMessage({
+    message: message,
+    type: "success",
+    position: "top",
+    animated: true,
+    duration: 1000,
+  });
+};
+
+/**
+ * @typedef {Function}
+ * @param {Text} message
+ */
+export const showInfo = (message) => {
+  showMessage({
+    message: message,
+    type: "info",
+    position: "bottom",
+    animated: true,
+    floating: true,
+    duration: 1000,
+  });
+};
+
+/**
+ * @typedef {Function}
+ * @param {Text} message
+ * @param {Text} heading
+ * @param {Image} image
+ */
+
+export const showSuccessPopup = (message, heading, image) => {
+  Popup.show({
+    type: "Success",
+    title: heading,
+    button: true,
+    textBody: message,
+    buttonText: "Ok",
+    duration: 1500,
+    iamge: image,
+    callback: () => Popup.hide(),
+  });
+};
+
+/**
+ * @typedef {Function}
+ * @param {Text} message
+ * @param {Text} heading
+ * @param {Image} image
+ */
+
+export const showErrorPopup = (message, heading, image) => {
+  Popup.show({
+    type: "Success",
+    title: heading,
+    button: true,
+    textBody: message,
+    buttonText: "Ok",
+    duration: 1500,
+    iamge: image,
+    callback: () => {
+      Popup.hide();
+    },
+  });
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="AccordianFilters.html">AccordianFilters</a></li><li><a href="AccordianFiltersOptions.html">AccordianFiltersOptions</a></li><li><a href="AccordianSubCategories.html">AccordianSubCategories</a></li><li><a href="Browse.html">Browse</a></li><li><a href="global.html#Button">Button</a></li><li><a href="Cart.html">Cart</a></li><li><a href="CategoriesList.html">CategoriesList</a></li><li><a href="ChangePassword.html">ChangePassword</a></li><li><a href="ConditionsOrInfo.html">ConditionsOrInfo</a></li><li><a href="Divider.html">Divider</a></li><li><a href="EmailVerification.html">EmailVerification</a></li><li><a href="Entrypoint.html">Entrypoint</a></li><li><a href="ExpandableList.html">ExpandableList</a></li><li><a href="Fade.html">Fade</a></li><li><a href="ForgetPassword.html">ForgetPassword</a></li><li><a href="Listing.html">Listing</a></li><li><a href="Login.html">Login</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Popup.html">Popup</a></li><li><a href="Register.html">Register</a></li><li><a href="Root.html">Root</a></li><li><a href="SearchBar.html">SearchBar</a></li><li><a href="SocialLogin.html">SocialLogin</a></li><li><a href="Splash.html">Splash</a></li><li><a href="Toast.html">Toast</a></li><li><a href="You.html">You</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToFavorite">addToFavorite</a></li><li><a href="global.html#AppStackNavigator">AppStackNavigator</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#Background">Background</a></li><li><a href="global.html#BottomMenuItem">BottomMenuItem</a></li><li><a href="global.html#BottomTabNavigator">BottomTabNavigator</a></li><li><a href="global.html#Categories">Categories</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#clearToken">clearToken</a></li><li><a href="global.html#clearUser">clearUser</a></li><li><a href="global.html#colors">colors</a></li><li><a href="global.html#componentWillReceiveProps">componentWillReceiveProps</a></li><li><a href="global.html#connectionState">connectionState</a></li><li><a href="global.html#fonts">fonts</a></li><li><a href="global.html#getCart">getCart</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getSettings">getSettings</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#handleMargins">handleMargins</a></li><li><a href="global.html#handlePaddings">handlePaddings</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#image">image</a></li><li><a href="global.html#iPhoneSize">iPhoneSize</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Logo">Logo</a></li><li><a href="global.html#Paragraph">Paragraph</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#saveCart">saveCart</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveToken">saveToken</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#sizes">sizes</a></li><li><a href="global.html#stars">stars</a></li><li><a href="global.html#TabBar">TabBar</a></li><li><a href="global.html#TextInput">TextInput</a></li><li><a href="global.html#translationGetters">translationGetters</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Apr 05 2021 08:59:19 GMT+0400 (Gulf Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

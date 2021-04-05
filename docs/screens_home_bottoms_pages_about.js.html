@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: screens/home/bottoms/pages/about.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: screens/home/bottoms/pages/about.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import {
+  StyleSheet,
+  StatusBar,
+  View,
+  ScrollView,
+  Dimensions,
+} from "react-native";
+import { theme } from "../../../../core/theme";
+import { Block, Text } from "../../../../components/widget";
+import * as loginActions from "../../../../actions/Actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Header from "../childs/Header";
+import { moderateScale } from "react-native-size-matters";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { translate } from "../../../../utils/utils";
+import HTML from "react-native-render-html";
+import Loader from "../../../../components/widget/loader";
+
+/**
+ *
+ */
+
+class About extends Component {
+  state = {
+    Wishlist: [],
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      selected: 1,
+      type: 1,
+      data: "",
+    };
+
+    this.about(1);
+  }
+
+  /**
+   * @typedef {Funciton}
+   * @param {number} index
+   */
+  about(index) {
+    this.setState({ data: "" });
+    this.setState({ isLoading: true });
+    this.props.actions.about.fetchAbout(
+      { type: index },
+      (data) => {
+        console.log("about", data);
+        this.setState({ isLoading: false });
+        this.setState({ data: data.content });
+      },
+      (error) => {
+        console.log("Error", error);
+        this.setState({ isLoading: false });
+      }
+    );
+  }
+
+  decodeHTMLEntities(text) {
+    var entities = [
+      ["amp", "&amp;"],
+      ["apos", "'"],
+      ["#x27", "'"],
+      ["#x2F", "/"],
+      ["#39", "'"],
+      ["#47", "/"],
+      ["lt", "&lt;"],
+      ["gt", ">"],
+      ["nbsp", " "],
+      ["quot", '"'],
+    ];
+
+    for (var i = 0, max = entities.length; i &lt; max; ++i)
+      text = text.replace(
+        new RegExp("&amp;" + entities[i][0] + ";", "g"),
+        entities[i][1]
+      );
+
+    return text;
+  }
+
+  render() {
+    return (
+      &lt;Block>
+        &lt;StatusBar backgroundColor="transparent" barStyle="light-content" />
+
+        &lt;Header
+          search={false}
+          backPrimary={false}
+          back={true}
+          navigation={this.props.navigation}
+          backclick={() => {
+            this.props.navigation.pop();
+          }}
+          Text={translate("About")}
+        />
+        &lt;Loader isLoading={this.state.isLoading} />
+
+        &lt;View
+          style={{
+            margin: moderateScale(20),
+            borderRadius: moderateScale(10),
+            marginTop: moderateScale(-15),
+            flexDirection: "row",
+            bottom: moderateScale(-30),
+            zIndex: 2,
+          }}
+        >
+          &lt;View
+            style={[
+              {
+                flex: 1,
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
+                borderRadius: moderateScale(20),
+                marginHorizontal: moderateScale(4),
+                borderWidth: moderateScale(0.5),
+              },
+              this.state.selected === 1
+                ? { backgroundColor: theme.colors.secondary }
+                : {
+                    backgroundColor: theme.colors.white,
+                  },
+            ]}
+          >
+            &lt;TouchableOpacity
+              onPress={() => {
+                this.setState({ selected: 1 });
+                this.about(1);
+              }}
+            >
+              &lt;Text
+                style={[
+                  {
+                    color: theme.colors.white,
+                    fontSize: moderateScale(13),
+                    padding: moderateScale(5),
+                    fontWeight: "600",
+                    textAlign: "center",
+                  },
+                  this.state.selected === 1
+                    ? {}
+                    : { color: theme.colors.secondary },
+                ]}
+              >
+                {translate("Terms &amp; Conditions")}
+              &lt;/Text>
+            &lt;/TouchableOpacity>
+          &lt;/View>
+          &lt;View
+            style={{ height: "100%", width: 1, backgroundColor: "white" }}
+          />
+
+          &lt;View
+            style={[
+              {
+                flex: 1,
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
+                borderRadius: moderateScale(20),
+                marginHorizontal: moderateScale(4),
+                borderWidth: moderateScale(0.5),
+              },
+              this.state.selected === 2
+                ? { backgroundColor: theme.colors.secondary }
+                : { backgroundColor: theme.colors.white },
+            ]}
+          >
+            &lt;TouchableOpacity
+              onPress={() => {
+                this.setState({ selected: 2 });
+                this.about(2);
+              }}
+            >
+              &lt;Text
+                style={[
+                  {
+                    color: theme.colors.white,
+                    fontSize: moderateScale(13),
+                    padding: moderateScale(5),
+                    fontWeight: "600",
+                    textAlign: "center",
+                  },
+                  this.state.selected === 2
+                    ? {}
+                    : { color: theme.colors.secondary },
+                ]}
+              >
+                {translate("Privicy Policy")}
+              &lt;/Text>
+            &lt;/TouchableOpacity>
+          &lt;/View>
+          &lt;View
+            style={{ height: "100%", width: 1, backgroundColor: "white" }}
+          />
+
+          &lt;View
+            style={[
+              {
+                flex: 1,
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
+                borderRadius: moderateScale(20),
+                marginHorizontal: moderateScale(4),
+                borderWidth: moderateScale(0.5),
+              },
+              this.state.selected === 3
+                ? { backgroundColor: theme.colors.secondary }
+                : { backgroundColor: theme.colors.white },
+            ]}
+          >
+            &lt;TouchableOpacity
+              onPress={() => {
+                this.setState({ selected: 3 });
+                this.about(3);
+              }}
+            >
+              &lt;Text
+                style={[
+                  {
+                    color: theme.colors.white,
+                    fontSize: moderateScale(13),
+                    padding: moderateScale(5),
+                    fontWeight: "600",
+                    textAlign: "center",
+                  },
+                  this.state.selected === 3
+                    ? {}
+                    : { color: theme.colors.secondary },
+                ]}
+              >
+                {translate("About")}
+              &lt;/Text>
+            &lt;/TouchableOpacity>
+          &lt;/View>
+        &lt;/View>
+
+        &lt;View
+          style={{
+            width: "100%",
+            height: "100%",
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: moderateScale(20),
+            paddingHorizontal: moderateScale(10),
+          }}
+        >
+          &lt;View
+            style={{
+              width: "95%",
+              height: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            &lt;ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{ marginBottom: moderateScale(220) }}
+            >
+              &lt;View style={{ padding: 10, paddingStart: -10 }}>
+                &lt;HTML
+                  html={this.decodeHTMLEntities(
+                    this.state.data ? this.state.data : ""
+                  )}
+                  style={{ direction: "rtl", textAlign: "left" }}
+                  imagesMaxWidth={Dimensions.get("window").width}
+                />
+              &lt;/View>
+            &lt;/ScrollView>
+          &lt;/View>
+        &lt;/View>
+      &lt;/Block>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  data: {
+    userInfo: state.login.userInfo,
+  },
+});
+const mapDispatchToProps = (dispatch) => ({
+  actions: {
+    about: bindActionCreators(loginActions, dispatch),
+  },
+});
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 50,
+    backgroundColor: "#fff",
+  },
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(About));
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="AccordianFilters.html">AccordianFilters</a></li><li><a href="AccordianFiltersOptions.html">AccordianFiltersOptions</a></li><li><a href="AccordianSubCategories.html">AccordianSubCategories</a></li><li><a href="Browse.html">Browse</a></li><li><a href="global.html#Button">Button</a></li><li><a href="Cart.html">Cart</a></li><li><a href="CategoriesList.html">CategoriesList</a></li><li><a href="ChangePassword.html">ChangePassword</a></li><li><a href="ConditionsOrInfo.html">ConditionsOrInfo</a></li><li><a href="Divider.html">Divider</a></li><li><a href="EmailVerification.html">EmailVerification</a></li><li><a href="Entrypoint.html">Entrypoint</a></li><li><a href="ExpandableList.html">ExpandableList</a></li><li><a href="Fade.html">Fade</a></li><li><a href="ForgetPassword.html">ForgetPassword</a></li><li><a href="Listing.html">Listing</a></li><li><a href="Login.html">Login</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Popup.html">Popup</a></li><li><a href="Register.html">Register</a></li><li><a href="Root.html">Root</a></li><li><a href="SearchBar.html">SearchBar</a></li><li><a href="SocialLogin.html">SocialLogin</a></li><li><a href="Splash.html">Splash</a></li><li><a href="Toast.html">Toast</a></li><li><a href="You.html">You</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToFavorite">addToFavorite</a></li><li><a href="global.html#AppStackNavigator">AppStackNavigator</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#Background">Background</a></li><li><a href="global.html#BottomMenuItem">BottomMenuItem</a></li><li><a href="global.html#BottomTabNavigator">BottomTabNavigator</a></li><li><a href="global.html#Categories">Categories</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#clearToken">clearToken</a></li><li><a href="global.html#clearUser">clearUser</a></li><li><a href="global.html#colors">colors</a></li><li><a href="global.html#componentWillReceiveProps">componentWillReceiveProps</a></li><li><a href="global.html#connectionState">connectionState</a></li><li><a href="global.html#fonts">fonts</a></li><li><a href="global.html#getCart">getCart</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getSettings">getSettings</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#handleMargins">handleMargins</a></li><li><a href="global.html#handlePaddings">handlePaddings</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#image">image</a></li><li><a href="global.html#iPhoneSize">iPhoneSize</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Logo">Logo</a></li><li><a href="global.html#Paragraph">Paragraph</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#saveCart">saveCart</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveToken">saveToken</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#sizes">sizes</a></li><li><a href="global.html#stars">stars</a></li><li><a href="global.html#TabBar">TabBar</a></li><li><a href="global.html#TextInput">TextInput</a></li><li><a href="global.html#translationGetters">translationGetters</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Apr 05 2021 08:59:19 GMT+0400 (Gulf Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

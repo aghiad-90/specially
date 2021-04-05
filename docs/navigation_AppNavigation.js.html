@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: navigation/AppNavigation.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: navigation/AppNavigation.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { createStackNavigator, createAppContainer } from "react-navigation";
+import Splash from "../screens/other/Splash";
+import BottomTabNavigator from "./TabNavigator";
+import About from "../screens/home/bottoms/pages/about";
+import ViewForMedia from "../screens/home/bottoms/pages/ViewForMedia";
+
+import ContactUs from "../screens/home/bottoms/pages/contactus";
+import bePartner from "../screens/home/bottoms/pages/bePartner";
+
+import Gallery from "../screens/home/bottoms/pages/Gallery";
+import Requests from "../screens/home/bottoms/pages/Requests";
+import MyRequests from "../screens/home/bottoms/pages/MyRequests";
+import Money from "../screens/home/bottoms/pages/Money";
+import Pricing from "../screens/home/bottoms/pages/Pricing";
+import NewsDetails from "../screens/home/bottoms/pages/NewsDetails";
+
+import Profile from "../screens/home/bottoms/pages/profile";
+
+import Login from "../screens/home/bottoms/auth/Login";
+import Register from "../screens/home/bottoms/auth/Register";
+import ForgetPassword from "../screens/home/bottoms/auth/ForgetPassword";
+
+import CeleberateDetails from "../screens/home/bottoms/pages/CeleberateDetails";
+import MyMood from "../screens/home/bottoms/pages/MyMood";
+
+import CeleberateBooking from "../screens/home/bottoms/pages/CeleberateBooking";
+import MakeBooking from "../screens/home/bottoms/pages/MakeBooking";
+import MyContract from "../screens/home/bottoms/pages/MyContract";
+import Dashboard from "../screens/home/bottoms/pages/Dashboard";
+import VerificationProcesss from "../screens/home/bottoms/pages/VerificationProcesss";
+
+import Search from "../screens/home/bottoms/search";
+
+/**
+ * Main Navigator for the App
+ * @type {Const}
+ * @returns it will retrun an Object of Components
+ */
+
+const AppStackNavigator = createStackNavigator({
+  splash: {
+    screen: Splash,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  home: {
+    screen: BottomTabNavigator,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  CeleberateDetails: {
+    screen: CeleberateDetails,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  MyMood: {
+    screen: MyMood,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  CeleberateBooking: {
+    screen: CeleberateBooking,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  MakeBooking: {
+    screen: MakeBooking,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  search: {
+    screen: Search,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Dashboard: {
+    screen: Dashboard,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  VerificationProcesss: {
+    screen: VerificationProcesss,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  MyContract: {
+    screen: MyContract,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Gallery: {
+    screen: Gallery,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Requests: {
+    screen: Requests,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Money: {
+    screen: Money,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  MyRequests: {
+    screen: MyRequests,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Pricing: {
+    screen: Pricing,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  NewsDetails: {
+    screen: NewsDetails,
+    navigationOptions: {
+      header: null,
+    },
+  },
+
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Register: {
+    screen: Register,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  ForgetPassword: {
+    screen: ForgetPassword,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Profile: {
+    screen: Profile,
+    navigationOptions: {
+      header: null,
+    },
+  },
+
+  About: {
+    screen: About,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  ViewForMedia: {
+    screen: ViewForMedia,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  bePartner: {
+    screen: bePartner,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  ContactUs: {
+    screen: ContactUs,
+    navigationOptions: {
+      header: null,
+    },
+  },
+});
+const App = createAppContainer(AppStackNavigator);
+
+export default App;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="AccordianFilters.html">AccordianFilters</a></li><li><a href="AccordianFiltersOptions.html">AccordianFiltersOptions</a></li><li><a href="AccordianSubCategories.html">AccordianSubCategories</a></li><li><a href="Browse.html">Browse</a></li><li><a href="global.html#Button">Button</a></li><li><a href="Cart.html">Cart</a></li><li><a href="CategoriesList.html">CategoriesList</a></li><li><a href="ChangePassword.html">ChangePassword</a></li><li><a href="ConditionsOrInfo.html">ConditionsOrInfo</a></li><li><a href="Divider.html">Divider</a></li><li><a href="EmailVerification.html">EmailVerification</a></li><li><a href="Entrypoint.html">Entrypoint</a></li><li><a href="ExpandableList.html">ExpandableList</a></li><li><a href="Fade.html">Fade</a></li><li><a href="ForgetPassword.html">ForgetPassword</a></li><li><a href="Listing.html">Listing</a></li><li><a href="Login.html">Login</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Popup.html">Popup</a></li><li><a href="Register.html">Register</a></li><li><a href="Root.html">Root</a></li><li><a href="SearchBar.html">SearchBar</a></li><li><a href="SocialLogin.html">SocialLogin</a></li><li><a href="Splash.html">Splash</a></li><li><a href="Toast.html">Toast</a></li><li><a href="You.html">You</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToFavorite">addToFavorite</a></li><li><a href="global.html#AppStackNavigator">AppStackNavigator</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#Background">Background</a></li><li><a href="global.html#BottomMenuItem">BottomMenuItem</a></li><li><a href="global.html#BottomTabNavigator">BottomTabNavigator</a></li><li><a href="global.html#Categories">Categories</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#clearToken">clearToken</a></li><li><a href="global.html#clearUser">clearUser</a></li><li><a href="global.html#colors">colors</a></li><li><a href="global.html#componentWillReceiveProps">componentWillReceiveProps</a></li><li><a href="global.html#connectionState">connectionState</a></li><li><a href="global.html#fonts">fonts</a></li><li><a href="global.html#getCart">getCart</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getSettings">getSettings</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#handleMargins">handleMargins</a></li><li><a href="global.html#handlePaddings">handlePaddings</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#image">image</a></li><li><a href="global.html#iPhoneSize">iPhoneSize</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Logo">Logo</a></li><li><a href="global.html#Paragraph">Paragraph</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#saveCart">saveCart</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveToken">saveToken</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#sizes">sizes</a></li><li><a href="global.html#stars">stars</a></li><li><a href="global.html#TabBar">TabBar</a></li><li><a href="global.html#TextInput">TextInput</a></li><li><a href="global.html#translationGetters">translationGetters</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Apr 05 2021 08:59:19 GMT+0400 (Gulf Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

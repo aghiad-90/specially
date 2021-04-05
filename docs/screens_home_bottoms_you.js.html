@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: screens/home/bottoms/you.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: screens/home/bottoms/you.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import {
+  StyleSheet,
+  StatusBar,
+  View,
+  Image,
+  I18nManager,
+  Linking,
+} from "react-native";
+import { theme } from "../../../core/theme";
+import { Block, Text } from "../../../components/widget";
+import * as loginActions from "../../../actions/Actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { moderateScale } from "react-native-size-matters";
+import { getStatusBarHeight } from "react-native-status-bar-height";
+import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
+import { clearToken } from "../../../utils/storage";
+import { setToken } from "../../../services/api";
+import { translate } from "../../../utils/utils";
+import CeleberatyHeader from "./childs/CeleberatyHeader";
+import Header from "./childs/Header";
+import GuestHeader from "./childs/GuestHeader";
+
+/**
+ * Profile Settings Screen
+ */
+
+class You extends Component {
+  state = {
+    Wishlist: [],
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      list: [],
+      modalVisible: false,
+      selectedProduct: {},
+      page: 0,
+      lastindex: -1,
+      animatingLoadMore: false,
+      noMoreProducts: false,
+      somethingWentWrong: false,
+    };
+
+    this.hideModel = this.hideModel.bind(this);
+  }
+
+  /**
+   *
+   */
+
+  hideModel() {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  }
+
+  /**
+   *
+   */
+
+  componentDidMount() {
+    this.setState({ isLoading: true, animating: true });
+  }
+
+  componentWillReceiveProps(nextProps) {}
+
+  render() {
+    return (
+      &lt;Block>
+        &lt;StatusBar backgroundColor="transparent" barStyle="light-content" />
+        &lt;View
+          style={{
+            backgroundColor: "transparent",
+            position: "absolute",
+            zIndex: 100,
+            width: "100%",
+            backgroundColor: theme.colors.primary,
+          }}
+        >
+          &lt;Header
+            logoleft={true}
+            navigation={this.props.navigation}
+            search={true}
+            notification={true}
+          />
+        &lt;/View>
+
+        &lt;View style={{ marginTop: getStatusBarHeight() + moderateScale(50) }} />
+        &lt;CeleberatyHeader {...this.props} />
+        &lt;GuestHeader {...this.props} />
+
+        &lt;View
+          style={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            alignContent: "center",
+            width: "100%",
+            alignSelf: "center",
+          }}
+        >
+          &lt;ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              alignContent: "center",
+              width: "100%",
+            }}
+            style={{
+              width: "90%",
+              marginTop: moderateScale(10),
+              paddingTop: moderateScale(20),
+            }}
+          >
+            {/* &lt;View style={{ margin: moderateScale(10), width: '100%', zIndex: 1, backgroundColor: 'transparent' }}>
+                            &lt;View style={{
+                                flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center', marginTop: moderateScale(10), borderColor: theme.colors.primary,
+                                borderRadius: moderateScale(10), paddingVertical: moderateScale(10), marginHorizontal: moderateScale(10), backgroundColor: 'transparent',
+                            }}>
+                                &lt;View style={{ width: '100%', justifyContent: 'center', alignContent: 'center', alignItems: 'center', marginBottom: moderateScale(0) }}>
+                                    &lt;Image source={require('app/assets/assets/logwithname.png')} resizeMode="contain" style={{ height: moderateScale(100), width: moderateScale(150), marginBottom: moderateScale(0) }} />
+                                &lt;/View>
+                            &lt;/View>
+                        &lt;/View> */}
+
+            {!this.props.data.userInfo.email &amp;&amp; (
+              &lt;View
+                style={{
+                  width: "80%",
+                  backgroundColor: theme.colors.secondary,
+                  borderRadius: moderateScale(10),
+                  marginBottom: moderateScale(10),
+                }}
+              >
+                &lt;TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("Login");
+                  }}
+                >
+                  &lt;View style={{ padding: moderateScale(7) }}>
+                    &lt;View
+                      onPress={() => {
+                        this.props.navigation.navigate("Login");
+                      }}
+                    >
+                      &lt;Text
+                        bold
+                        style={{
+                          color: theme.colors.white,
+                          fontSize: moderateScale(15),
+                          fontWeight: "bold",
+                          textAlign: "center",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {translate("LOGIN/REGISTER")}
+                      &lt;/Text>
+                    &lt;/View>
+                  &lt;/View>
+                &lt;/TouchableOpacity>
+              &lt;/View>
+            )}
+
+            {!!!this.props.data.userInfo.email &amp;&amp; (
+              &lt;TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("bePartner");
+                }}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "80%",
+                  marginBottom: moderateScale(20),
+                }}
+              >
+                &lt;View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: moderateScale(20),
+                    width: "100%",
+                    backgroundColor: theme.colors.secondary,
+                    borderRadius: moderateScale(10),
+                  }}
+                >
+                  &lt;Image
+                    source={require("app/assets/assets/partner.png")}
+                    resizeMode="contain"
+                    style={{
+                      height: moderateScale(20),
+                      width: moderateScale(20),
+                      ...(I18nManager.isRTL
+                        ? { transform: [{ rotate: "180deg" }] }
+                        : {}),
+                      tintColor: theme.colors.primary,
+                    }}
+                  />
+                  &lt;Text
+                    semibold
+                    style={{
+                      ...(I18nManager.isRTL
+                        ? { textAlign: "center" }
+                        : { textAlign: "center" }),
+                      color: theme.colors.white,
+                      fontSize: moderateScale(15),
+                      padding: moderateScale(7),
+                      flex: 1,
+                      fontWeight: "bold",
+                      paddingRight: moderateScale(20),
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {translate("VIP Membership")}
+                  &lt;/Text>
+                &lt;/View>
+              &lt;/TouchableOpacity>
+            )
+
+            // &lt;View style={{ width: '80%', backgroundColor: theme.colors.secondary, borderRadius: moderateScale(10), marginBottom: moderateScale(20) }}>
+            //     &lt;TouchableOpacity onPress={() => { this.props.navigation.navigate('Login') }}>
+            //         &lt;View
+            //             style={{ padding: moderateScale(7) }}>
+            //             &lt;View onPress={() => { this.props.navigation.navigate('Login') }}>
+            //                 &lt;Text bold style={{ color: theme.colors.white, fontSize: moderateScale(15), fontWeight: 'bold', textAlign: 'center' }}>{translate('LOGIN/REGISTER')}&lt;/Text>
+            //             &lt;/View>
+            //         &lt;/View>
+            //     &lt;/TouchableOpacity>
+            // &lt;/View>
+            }
+
+            &lt;View
+              style={{
+                width: "105%",
+                flex: 1,
+                marginTop: moderateScale(0),
+                paddingTop: moderateScale(0),
+                alignItems: "center",
+              }}
+            >
+              {this.props.data.userInfo.email &amp;&amp; (
+                &lt;TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("Profile");
+                  }}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  &lt;View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingHorizontal: moderateScale(20),
+                      width: "100%",
+                      borderBottomColor: theme.colors.primary,
+                      borderBottomWidth: moderateScale(0.8),
+                    }}
+                  >
+                    &lt;Image
+                      source={require("app/assets/assets/profile.png")}
+                      resizeMode="contain"
+                      style={{
+                        height: moderateScale(40),
+                        width: moderateScale(40),
+                        ...(I18nManager.isRTL
+                          ? { transform: [{ rotate: "180deg" }] }
+                          : {}),
+                      }}
+                    />
+                    &lt;Text
+                      semibold
+                      style={{
+                        ...(I18nManager.isRTL
+                          ? { textAlign: "right" }
+                          : { textAlign: "left" }),
+                        color: theme.colors.secondary,
+                        fontSize: moderateScale(16),
+                        padding: moderateScale(10),
+                        flex: 1,
+                        fontWeight: "bold",
+                        paddingRight: moderateScale(70),
+                      }}
+                    >
+                      {translate("My Profile")}
+                    &lt;/Text>
+                  &lt;/View>
+                &lt;/TouchableOpacity>
+              )}
+
+              {/* {this.props.data.userInfo.email &amp;&amp; this.props.data.userInfo.role !== 'user' &amp;&amp;
+                                &lt;TouchableOpacity onPress={() => { this.props.navigation.navigate('Gallery') }} style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+                                    &lt;View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: moderateScale(20), width: '100%', borderBottomColor: theme.colors.primary, borderBottomWidth: moderateScale(0.8) }}>
+                                        &lt;Image source={require('app/assets/assets/gallery.png')} resizeMode="contain" style={{ height: moderateScale(40), width: moderateScale(40), ...I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {}, }} />
+                                        &lt;Text semibold style={{ ...I18nManager.isRTL ? { textAlign: 'right' } : { textAlign: 'left' }, color: theme.colors.secondary, fontSize: moderateScale(16), padding: moderateScale(10), flex: 1, fontWeight: 'bold', paddingRight: moderateScale(70) }}>{translate('My Gallery')}&lt;/Text>
+                                    &lt;/View>
+                                &lt;/TouchableOpacity>
+                            } */}
+
+              {this.props.data.userInfo.email &amp;&amp;
+                this.props.data.userInfo.role !== "user" &amp;&amp; (
+                  &lt;TouchableOpacity
+                    onPress={() => {
+                      this.props.navigation.navigate("Dashboard");
+                    }}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    &lt;View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        paddingHorizontal: moderateScale(20),
+                        width: "100%",
+                        borderBottomColor: theme.colors.primary,
+                        borderBottomWidth: moderateScale(0.8),
+                      }}
+                    >
+                      &lt;Image
+                        source={require("app/assets/assets/dashboard.png")}
+                        resizeMode="contain"
+                        style={{
+                          height: moderateScale(40),
+                          width: moderateScale(40),
+                          ...(I18nManager.isRTL
+                            ? { transform: [{ rotate: "180deg" }] }
+                            : {}),
+                        }}
+                      />
+                      &lt;Text
+                        semibold
+                        style={{
+                          ...(I18nManager.isRTL
+                            ? { textAlign: "right" }
+                            : { textAlign: "left" }),
+                          color: theme.colors.secondary,
+                          fontSize: moderateScale(16),
+                          padding: moderateScale(10),
+                          flex: 1,
+                          fontWeight: "bold",
+                          paddingRight: moderateScale(70),
+                        }}
+                      >
+                        {translate("Artist Dashboard")}
+                      &lt;/Text>
+                    &lt;/View>
+                  &lt;/TouchableOpacity>
+                )}
+
+              {this.props.data.userInfo.email &amp;&amp;
+                this.props.data.userInfo.role === "user" &amp;&amp; (
+                  &lt;TouchableOpacity
+                    onPress={() => {
+                      this.props.navigation.navigate("MyRequests");
+                    }}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    &lt;View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        paddingHorizontal: moderateScale(20),
+                        width: "100%",
+                        borderBottomColor: theme.colors.primary,
+                        borderBottomWidth: moderateScale(0.8),
+                      }}
+                    >
+                      &lt;Image
+                        source={require("app/assets/assets/dashboard.png")}
+                        resizeMode="contain"
+                        style={{
+                          height: moderateScale(40),
+                          width: moderateScale(40),
+                          ...(I18nManager.isRTL
+                            ? { transform: [{ rotate: "180deg" }] }
+                            : {}),
+                        }}
+                      />
+                      &lt;Text
+                        semibold
+                        style={{
+                          ...(I18nManager.isRTL
+                            ? { textAlign: "right" }
+                            : { textAlign: "left" }),
+                          color: theme.colors.secondary,
+                          fontSize: moderateScale(16),
+                          padding: moderateScale(10),
+                          flex: 1,
+                          fontWeight: "bold",
+                          paddingRight: moderateScale(70),
+                        }}
+                      >
+                        {translate("My Requests")}
+                      &lt;/Text>
+                    &lt;/View>
+                  &lt;/TouchableOpacity>
+                )}
+
+              &lt;TouchableOpacity
+                onPress={() => {
+                  let url =
+                    "whatsapp://send?text=" + "" + "&amp;phone=" + "+971528132016";
+                  Linking.openURL(url)
+                    .then((data) => {
+                      console.log("WhatsApp Opened");
+                    })
+                    .catch(() => {
+                      alert("Make sure WhatsApp installed on your device");
+                    });
+                }}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                &lt;View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: moderateScale(20),
+                    width: "100%",
+                    borderBottomColor: theme.colors.primary,
+                    borderBottomWidth: moderateScale(0.8),
+                  }}
+                >
+                  &lt;Image
+                    source={require("app/assets/assets/dashboard.png")}
+                    resizeMode="contain"
+                    style={{
+                      height: moderateScale(40),
+                      width: moderateScale(40),
+                      ...(I18nManager.isRTL
+                        ? { transform: [{ rotate: "180deg" }] }
+                        : {}),
+                    }}
+                  />
+                  &lt;Text
+                    semibold
+                    style={{
+                      ...(I18nManager.isRTL
+                        ? { textAlign: "right" }
+                        : { textAlign: "left" }),
+                      color: theme.colors.secondary,
+                      fontSize: moderateScale(16),
+                      padding: moderateScale(10),
+                      flex: 1,
+                      fontWeight: "bold",
+                      paddingRight: moderateScale(70),
+                    }}
+                  >
+                    {translate("Tell Us Your Exclusive News")}
+                  &lt;/Text>
+                &lt;/View>
+              &lt;/TouchableOpacity>
+
+              &lt;TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("Settings");
+                }}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                &lt;View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: moderateScale(20),
+                    width: "100%",
+                    borderBottomColor: theme.colors.primary,
+                    borderBottomWidth: moderateScale(0.8),
+                  }}
+                >
+                  &lt;Image
+                    source={require("app/assets/assets/language.png")}
+                    resizeMode="contain"
+                    style={{
+                      height: moderateScale(40),
+                      width: moderateScale(40),
+                      ...(I18nManager.isRTL
+                        ? { transform: [{ rotate: "180deg" }] }
+                        : {}),
+                    }}
+                  />
+                  &lt;Text
+                    semibold
+                    style={{
+                      ...(I18nManager.isRTL
+                        ? { textAlign: "right" }
+                        : { textAlign: "left" }),
+                      color: theme.colors.secondary,
+                      fontSize: moderateScale(16),
+                      padding: moderateScale(10),
+                      flex: 1,
+                      fontWeight: "bold",
+                      paddingRight: moderateScale(70),
+                    }}
+                  >
+                    {translate("Change Language")}
+                  &lt;/Text>
+                &lt;/View>
+              &lt;/TouchableOpacity>
+
+              &lt;TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("About");
+                }}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                &lt;View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: moderateScale(20),
+                    width: "100%",
+                    borderBottomColor: theme.colors.primary,
+                    borderBottomWidth: moderateScale(0.8),
+                  }}
+                >
+                  &lt;Image
+                    source={require("app/assets/assets/about.png")}
+                    resizeMode="contain"
+                    style={{
+                      height: moderateScale(40),
+                      width: moderateScale(40),
+                      ...(I18nManager.isRTL
+                        ? { transform: [{ rotate: "180deg" }] }
+                        : {}),
+                    }}
+                  />
+                  &lt;Text
+                    semibold
+                    style={{
+                      ...(I18nManager.isRTL
+                        ? { textAlign: "right" }
+                        : { textAlign: "left" }),
+                      color: theme.colors.secondary,
+                      fontSize: moderateScale(16),
+                      padding: moderateScale(10),
+                      flex: 1,
+                      fontWeight: "bold",
+                      paddingRight: moderateScale(70),
+                    }}
+                  >
+                    {translate("About App")}
+                  &lt;/Text>
+                &lt;/View>
+              &lt;/TouchableOpacity>
+
+              &lt;TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("ContactUs");
+                }}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                &lt;View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: moderateScale(20),
+                    width: "100%",
+                    borderBottomColor: theme.colors.primary,
+                    borderBottomWidth: moderateScale(0.8),
+                  }}
+                >
+                  &lt;Image
+                    source={require("app/assets/assets/contactus.png")}
+                    resizeMode="contain"
+                    style={{
+                      height: moderateScale(40),
+                      width: moderateScale(40),
+                      ...(I18nManager.isRTL
+                        ? { transform: [{ rotate: "180deg" }] }
+                        : {}),
+                    }}
+                  />
+                  &lt;Text
+                    semibold
+                    style={{
+                      ...(I18nManager.isRTL
+                        ? { textAlign: "right" }
+                        : { textAlign: "left" }),
+                      color: theme.colors.secondary,
+                      fontSize: moderateScale(16),
+                      padding: moderateScale(10),
+                      flex: 1,
+                      fontWeight: "bold",
+                      paddingRight: moderateScale(70),
+                    }}
+                  >
+                    {translate("Contact Us")}
+                  &lt;/Text>
+                &lt;/View>
+              &lt;/TouchableOpacity>
+
+              {this.props.data.userInfo.email &amp;&amp; (
+                &lt;TouchableOpacity
+                  onPress={() => {
+                    setToken("");
+                    clearToken();
+
+                    this.props.navigation.dispatch(
+                      loginActions.setUserInfo({ profile: "", role: "" })
+                    );
+                    this.props.actions.You.setUserInfo({
+                      profile: "",
+                      role: "",
+                    });
+
+                    setTimeout(() => {
+                      this.props.actions.You.refreashNotifications();
+                      this.props.actions.You.refreashHome();
+                    }, 200);
+                  }}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  &lt;View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingHorizontal: moderateScale(20),
+                      width: "100%",
+                      borderBottomColor: theme.colors.primary,
+                      borderBottomWidth: moderateScale(0.8),
+                    }}
+                  >
+                    &lt;Image
+                      source={require("app/assets/assets/logout.png")}
+                      resizeMode="contain"
+                      style={{
+                        height: moderateScale(40),
+                        width: moderateScale(40),
+                        ...(I18nManager.isRTL
+                          ? { transform: [{ rotate: "180deg" }] }
+                          : {}),
+                      }}
+                    />
+                    &lt;Text
+                      semibold
+                      style={{
+                        ...(I18nManager.isRTL
+                          ? { textAlign: "right" }
+                          : { textAlign: "left" }),
+                        color: theme.colors.secondary,
+                        fontSize: moderateScale(16),
+                        padding: moderateScale(10),
+                        flex: 1,
+                        fontWeight: "bold",
+                        paddingRight: moderateScale(70),
+                      }}
+                    >
+                      {translate("Logout")}
+                    &lt;/Text>
+                  &lt;/View>
+                &lt;/TouchableOpacity>
+              )}
+            &lt;/View>
+          &lt;/ScrollView>
+        &lt;/View>
+      &lt;/Block>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  data: {
+    userInfo: state.login.userInfo,
+  },
+});
+const mapDispatchToProps = (dispatch) => ({
+  actions: {
+    You: bindActionCreators(loginActions, dispatch),
+  },
+});
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 50,
+    backgroundColor: "#fff",
+  },
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(You));
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="AccordianFilters.html">AccordianFilters</a></li><li><a href="AccordianFiltersOptions.html">AccordianFiltersOptions</a></li><li><a href="AccordianSubCategories.html">AccordianSubCategories</a></li><li><a href="Browse.html">Browse</a></li><li><a href="global.html#Button">Button</a></li><li><a href="Cart.html">Cart</a></li><li><a href="CategoriesList.html">CategoriesList</a></li><li><a href="ChangePassword.html">ChangePassword</a></li><li><a href="ConditionsOrInfo.html">ConditionsOrInfo</a></li><li><a href="Divider.html">Divider</a></li><li><a href="EmailVerification.html">EmailVerification</a></li><li><a href="Entrypoint.html">Entrypoint</a></li><li><a href="ExpandableList.html">ExpandableList</a></li><li><a href="Fade.html">Fade</a></li><li><a href="ForgetPassword.html">ForgetPassword</a></li><li><a href="Listing.html">Listing</a></li><li><a href="Login.html">Login</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Popup.html">Popup</a></li><li><a href="Register.html">Register</a></li><li><a href="Root.html">Root</a></li><li><a href="SearchBar.html">SearchBar</a></li><li><a href="SocialLogin.html">SocialLogin</a></li><li><a href="Splash.html">Splash</a></li><li><a href="Toast.html">Toast</a></li><li><a href="You.html">You</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToFavorite">addToFavorite</a></li><li><a href="global.html#AppStackNavigator">AppStackNavigator</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#Background">Background</a></li><li><a href="global.html#BottomMenuItem">BottomMenuItem</a></li><li><a href="global.html#BottomTabNavigator">BottomTabNavigator</a></li><li><a href="global.html#Categories">Categories</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#clearToken">clearToken</a></li><li><a href="global.html#clearUser">clearUser</a></li><li><a href="global.html#colors">colors</a></li><li><a href="global.html#componentWillReceiveProps">componentWillReceiveProps</a></li><li><a href="global.html#connectionState">connectionState</a></li><li><a href="global.html#fonts">fonts</a></li><li><a href="global.html#getCart">getCart</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getSettings">getSettings</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#handleMargins">handleMargins</a></li><li><a href="global.html#handlePaddings">handlePaddings</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#image">image</a></li><li><a href="global.html#iPhoneSize">iPhoneSize</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Logo">Logo</a></li><li><a href="global.html#Paragraph">Paragraph</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#saveCart">saveCart</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveToken">saveToken</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#sizes">sizes</a></li><li><a href="global.html#stars">stars</a></li><li><a href="global.html#TabBar">TabBar</a></li><li><a href="global.html#TextInput">TextInput</a></li><li><a href="global.html#translationGetters">translationGetters</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Apr 05 2021 08:59:20 GMT+0400 (Gulf Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

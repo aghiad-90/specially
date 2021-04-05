@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Weights/SearchBar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Weights/SearchBar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import Icon from "react-native-vector-icons/Ionicons";
+import { View, Text, StyleSheet, Image } from "react-native";
+import { theme } from "../../core/theme";
+
+/**
+ * Search Bar
+ */
+
+export default class SearchBar extends Component {
+  render() {
+    return (
+      &lt;View style={styles.wrapper}>
+        &lt;View style={styles.rowShape}>
+          &lt;View style={styles.itemStyleLogo}>
+            &lt;Image
+              style={styles.imageIcon}
+              resizeMode="contain"
+              source={require("app/assets/logo.png")}
+            />
+          &lt;/View>
+          &lt;View style={styles.itemStyleSearch}>
+            &lt;View style={styles.searchContainer}>
+              &lt;Icon
+                name="ios-search"
+                size={20}
+                color={theme.colors.gray02}
+                style={styles.searchIcon}
+              />
+              &lt;Text style={styles.textInput}>Search&lt;/Text>
+            &lt;/View>
+          &lt;/View>
+          &lt;View style={styles.itemStyle} />
+        &lt;/View>
+      &lt;/View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  wrapper: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    backgroundColor: "rgba(247, 153, 89,0.9)",
+    width: "100%",
+    height: 80,
+    zIndex: 99,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+  searchContainer: {
+    display: "flex",
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    backgroundColor: theme.colors.white,
+    shadowColor: "rgba(0,0,0,0.1)",
+    shadowOffset: { width: 10, height: 5 },
+    shadowOpacity: 0.7,
+    shadowRadius: 10,
+    borderRadius: 3,
+    height: 40,
+    // width: 280,
+    marginTop: 14,
+    marginLeft: 21,
+    marginRight: 21,
+  },
+  searchIcon: {
+    position: "absolute",
+    left: 18,
+    top: 9,
+  },
+  textInput: {
+    display: "flex",
+    marginTop: 11,
+    marginLeft: 44,
+    color: theme.colors.gray02,
+  },
+  imageIcon: {
+    width: 80,
+    alignItems: "center",
+    marginLeft: 10,
+    height: 50,
+    marginTop: 14,
+  },
+  rowShape: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  itemStyleLogo: {
+    flex: 0.2,
+  },
+  itemStyleSearch: {
+    flex: 0.8,
+  },
+  itemStyle: {
+    flex: 0,
+  },
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="AccordianFilters.html">AccordianFilters</a></li><li><a href="AccordianFiltersOptions.html">AccordianFiltersOptions</a></li><li><a href="AccordianSubCategories.html">AccordianSubCategories</a></li><li><a href="Browse.html">Browse</a></li><li><a href="global.html#Button">Button</a></li><li><a href="Cart.html">Cart</a></li><li><a href="CategoriesList.html">CategoriesList</a></li><li><a href="ChangePassword.html">ChangePassword</a></li><li><a href="ConditionsOrInfo.html">ConditionsOrInfo</a></li><li><a href="Divider.html">Divider</a></li><li><a href="EmailVerification.html">EmailVerification</a></li><li><a href="Entrypoint.html">Entrypoint</a></li><li><a href="ExpandableList.html">ExpandableList</a></li><li><a href="Fade.html">Fade</a></li><li><a href="ForgetPassword.html">ForgetPassword</a></li><li><a href="Listing.html">Listing</a></li><li><a href="Login.html">Login</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Popup.html">Popup</a></li><li><a href="Register.html">Register</a></li><li><a href="Root.html">Root</a></li><li><a href="SearchBar.html">SearchBar</a></li><li><a href="SocialLogin.html">SocialLogin</a></li><li><a href="Splash.html">Splash</a></li><li><a href="Toast.html">Toast</a></li><li><a href="You.html">You</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToFavorite">addToFavorite</a></li><li><a href="global.html#AppStackNavigator">AppStackNavigator</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#Background">Background</a></li><li><a href="global.html#BottomMenuItem">BottomMenuItem</a></li><li><a href="global.html#BottomTabNavigator">BottomTabNavigator</a></li><li><a href="global.html#Categories">Categories</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#clearToken">clearToken</a></li><li><a href="global.html#clearUser">clearUser</a></li><li><a href="global.html#colors">colors</a></li><li><a href="global.html#componentWillReceiveProps">componentWillReceiveProps</a></li><li><a href="global.html#connectionState">connectionState</a></li><li><a href="global.html#fonts">fonts</a></li><li><a href="global.html#getCart">getCart</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getSettings">getSettings</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#handleMargins">handleMargins</a></li><li><a href="global.html#handlePaddings">handlePaddings</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#image">image</a></li><li><a href="global.html#iPhoneSize">iPhoneSize</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Logo">Logo</a></li><li><a href="global.html#Paragraph">Paragraph</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#saveCart">saveCart</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveToken">saveToken</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#sizes">sizes</a></li><li><a href="global.html#stars">stars</a></li><li><a href="global.html#TabBar">TabBar</a></li><li><a href="global.html#TextInput">TextInput</a></li><li><a href="global.html#translationGetters">translationGetters</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Apr 05 2021 08:59:19 GMT+0400 (Gulf Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

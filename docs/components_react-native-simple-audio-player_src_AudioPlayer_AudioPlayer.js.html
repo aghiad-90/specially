@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/react-native-simple-audio-player/src/AudioPlayer/AudioPlayer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/react-native-simple-audio-player/src/AudioPlayer/AudioPlayer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useRef } from "react";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+  LayoutAnimation,
+  UIManager,
+  Image,
+} from "react-native";
+import { styles } from "./styles";
+import Video from "react-native-video";
+import Slider from "@react-native-community/slider";
+import { toHHMMSS } from "./utils";
+import { Images } from "./assets/index";
+
+UIManager.setLayoutAnimationEnabledExperimental &amp;&amp;
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+
+const volumeControlTime = 3000;
+
+/**
+ * @typedef {Function}
+ * @param {Props} props contains the source of Track and the Config
+ * @returns return the UI
+ */
+
+export const AudioPlayer = (props) => {
+  const { url, style } = props;
+  const [paused, setPaused] = useState(true);
+
+  const videoRef = useRef(null);
+  const controlTimer = useRef(0);
+
+  const [totalLength, setTotalLength] = useState(0);
+  const [currentPosition, setCurrentPosition] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [volume, setVolume] = useState(0.7);
+  const [volumeControl, setVolumeControl] = useState(false);
+  const [repeat, setRepeat] = useState(false);
+
+  /**
+   * @typedef {Function}
+   * @param {Time} time
+   */
+  const onSeek = (time) => {
+    time = Math.round(time);
+    videoRef &amp;&amp; videoRef.current.seek(time);
+    setCurrentPosition(time);
+    setPaused(false);
+  };
+
+  /**
+   * @typedef {Function}
+   * @param {Number} data
+   */
+  const fixDuration = (data) => {
+    setLoading(false);
+    setTotalLength(Math.floor(data.duration));
+  };
+
+  /**
+   * @typedef {Function}
+   * @param {Time} data
+   */
+  const setTime = (data) => {
+    setCurrentPosition(Math.floor(data.currentTime));
+  };
+
+  /**
+   * @typedef {Function}
+   */
+  const togglePlay = () => {
+    setPaused(!paused);
+  };
+
+  /**
+   * @typedef {Function}
+   */
+
+  const toggleRepeat = () => {
+    setRepeat(!repeat);
+  };
+
+  /**
+   * @typedef {Function}
+   */
+
+  const toggleVolumeControl = () => {
+    setVolumeTimer(!volumeControl);
+    LayoutAnimation.easeInEaseOut();
+    setVolumeControl(!volumeControl);
+  };
+
+  /**
+   * @typedef {Function}
+   */
+
+  const setVolumeTimer = (setTimer = true) => {
+    clearTimeout(controlTimer.current);
+    controlTimer.current = 0;
+    if (setTimer) {
+      controlTimer.current = setTimeout(() => {
+        LayoutAnimation.easeInEaseOut();
+        setVolumeControl(false);
+      }, volumeControlTime);
+    }
+  };
+
+  /**
+   * @typedef {Function}
+   */
+  const onVolumeChange = (vol) => {
+    setVolumeTimer();
+    setVolume(vol);
+  };
+  /**
+   * @typedef {Funciton}
+   */
+  const resetAudio = () => {
+    if (!repeat) {
+      setPaused(true);
+    }
+    setCurrentPosition(0);
+  };
+
+  return (
+    &lt;View style={[style &amp;&amp; style, {}]}>
+      &lt;Video
+        source={{
+          uri: url,
+        }}
+        ref={videoRef}
+        playInBackground={false}
+        audioOnly={true}
+        playWhenInactive={false}
+        paused={paused}
+        onEnd={resetAudio}
+        onLoad={fixDuration}
+        onLoadStart={() => setLoading(true)}
+        onProgress={setTime}
+        volume={volume}
+        repeat={repeat}
+        style={{
+          height: 0,
+          width: 0,
+        }}
+      />
+
+      &lt;View>
+        &lt;View style={styles.rowContainer}>
+          {(loading &amp;&amp; (
+            &lt;View
+              style={{
+                margin: 18,
+              }}
+            >
+              &lt;ActivityIndicator size="large" color="#FFF" />
+            &lt;/View>
+          )) || (
+            &lt;View style={styles.actionsContainer}>
+              {/* &lt;TouchableOpacity
+                hitSlop={{ top: 10, bottom: 10, right: 10, left: 10 }}
+                style={styles.iconContainer}
+                onPress={toggleRepeat}
+              >
+                &lt;Image source={Images.repeatIcon} style={styles.playIcon}/>
+                {!repeat &amp;&amp; &lt;View style={styles.crossLine}/>}
+              &lt;/TouchableOpacity> */}
+              &lt;TouchableOpacity
+                style={[styles.iconContainer, styles.playBtn]}
+                onPress={togglePlay}
+              >
+                &lt;Image
+                  source={paused ? Images.playIcon : Images.pauseIcon}
+                  style={styles.playIcon}
+                />
+              &lt;/TouchableOpacity>
+              {/* &lt;View
+                style={[
+                  styles.volumeControlContainer,
+                  volumeControl ? { paddingHorizontal: 12 } : { backgroundColor: "transparent" }
+                ]}
+              >
+                &lt;TouchableOpacity
+                  hitSlop={{ top: 10, bottom: 10, right: 10, left: 10 }}
+                  style={styles.iconContainer}
+                  onPress={toggleVolumeControl}
+                >
+                  &lt;Image
+                    source={volume === 0 ? Images.muteIcon : Images.soundIcon}
+                    style={styles.playIcon}
+                  />
+                &lt;/TouchableOpacity>
+                {volumeControl &amp;&amp; (
+                  &lt;Slider
+                    style={styles.volumeSlider}
+                    minimumValue={0}
+                    maximumValue={1}
+                    minimumTrackTintColor={'#fff'}
+                    maximumTrackTintColor={'grey'}
+                    thumbTintColor={'#fff'}
+                    onSlidingComplete={onVolumeChange}
+                    value={volume}
+                  />
+                )}
+              &lt;/View> */}
+            &lt;/View>
+          )}
+
+          &lt;View style={styles.sliderContainer}>
+            &lt;Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={Math.max(totalLength, 1, currentPosition + 1)}
+              minimumTrackTintColor={"#fff"}
+              maximumTrackTintColor={"grey"}
+              onSlidingComplete={onSeek}
+              value={currentPosition}
+            />
+            &lt;View style={styles.durationContainer}>
+              &lt;Text style={styles.timeText}>{toHHMMSS(currentPosition)}&lt;/Text>
+              &lt;Text style={styles.timeText}>{toHHMMSS(totalLength)}&lt;/Text>
+            &lt;/View>
+          &lt;/View>
+        &lt;/View>
+      &lt;/View>
+    &lt;/View>
+  );
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="AccordianFilters.html">AccordianFilters</a></li><li><a href="AccordianFiltersOptions.html">AccordianFiltersOptions</a></li><li><a href="AccordianSubCategories.html">AccordianSubCategories</a></li><li><a href="Browse.html">Browse</a></li><li><a href="global.html#Button">Button</a></li><li><a href="Cart.html">Cart</a></li><li><a href="CategoriesList.html">CategoriesList</a></li><li><a href="ChangePassword.html">ChangePassword</a></li><li><a href="ConditionsOrInfo.html">ConditionsOrInfo</a></li><li><a href="Divider.html">Divider</a></li><li><a href="EmailVerification.html">EmailVerification</a></li><li><a href="Entrypoint.html">Entrypoint</a></li><li><a href="ExpandableList.html">ExpandableList</a></li><li><a href="Fade.html">Fade</a></li><li><a href="ForgetPassword.html">ForgetPassword</a></li><li><a href="Listing.html">Listing</a></li><li><a href="Login.html">Login</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Popup.html">Popup</a></li><li><a href="Register.html">Register</a></li><li><a href="Root.html">Root</a></li><li><a href="SearchBar.html">SearchBar</a></li><li><a href="SocialLogin.html">SocialLogin</a></li><li><a href="Splash.html">Splash</a></li><li><a href="Toast.html">Toast</a></li><li><a href="You.html">You</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToFavorite">addToFavorite</a></li><li><a href="global.html#AppStackNavigator">AppStackNavigator</a></li><li><a href="global.html#BackButton">BackButton</a></li><li><a href="global.html#Background">Background</a></li><li><a href="global.html#BottomMenuItem">BottomMenuItem</a></li><li><a href="global.html#BottomTabNavigator">BottomTabNavigator</a></li><li><a href="global.html#Categories">Categories</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#clearToken">clearToken</a></li><li><a href="global.html#clearUser">clearUser</a></li><li><a href="global.html#colors">colors</a></li><li><a href="global.html#componentWillReceiveProps">componentWillReceiveProps</a></li><li><a href="global.html#connectionState">connectionState</a></li><li><a href="global.html#fonts">fonts</a></li><li><a href="global.html#getCart">getCart</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getSettings">getSettings</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#handleMargins">handleMargins</a></li><li><a href="global.html#handlePaddings">handlePaddings</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#image">image</a></li><li><a href="global.html#iPhoneSize">iPhoneSize</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Logo">Logo</a></li><li><a href="global.html#Paragraph">Paragraph</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#saveCart">saveCart</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveToken">saveToken</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#sizes">sizes</a></li><li><a href="global.html#stars">stars</a></li><li><a href="global.html#TabBar">TabBar</a></li><li><a href="global.html#TextInput">TextInput</a></li><li><a href="global.html#translationGetters">translationGetters</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Apr 05 2021 08:59:19 GMT+0400 (Gulf Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
