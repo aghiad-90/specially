@@ -5,6 +5,11 @@ const env = {
   product: "product",
   local: "local",
 };
+
+/**
+ * @type { Object}
+ *
+ */
 const API_URL = {
   local: "http://localhost:5000/v1",
   dev: "http://10.5.67.18:5000/v1",
